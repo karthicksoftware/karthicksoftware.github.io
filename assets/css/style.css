@@ -1,0 +1,131 @@
+/* Custom Stylesheet */
+
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.sidenav-trigger {
+  color: #26a69a;
+}
+
+.parallax-container {
+  min-height: 200px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255, 255, 255, .9);
+}
+#skills-index-banner-top {
+  min-height: 300px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255, 255, 255, .9);
+}
+
+.parallax-container .section {
+  width: 100%;
+}
+
+@media only screen and (max-width: 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+  div.example {
+    font-size: 30px;
+  }
+}
+
+/*Custom*/
+
+.grad1 {
+  background: linear-gradient(to right, rgba(48, 194, 12, 0.966), rgba(74, 197, 2, 0.925));
+}
+
+.shadow {
+  box-shadow: -1px 8px 22px 4px rgba(39, 38, 37, 0.329) !important;
+}
+
+.pad-0 {
+  padding-top: 0%;
+  padding-bottom: 0%;
+}
+
+.shadow {
+  box-shadow: -1px 8px 22px 4px rgb(31, 31, 30);
+}
+
+.title {
+  position: relative;
+  padding-top: 0rem;
+  padding: 0rem;
+  padding-right: 1rem;
+  font-size: 25px;
+}
+
+.img-icon {
+  width: 60px;
+  height: 60px;
+}
+
+.footer-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.head-icon {
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: center;
+  vertical-align: middle;
+  color: white;
+  line-height: 100px;
+  /*or you could use 4em*/
+}
+
+.collection, .collection .collection-item {
+  border-color: deepskyblue;
+  font-weight:bold;
+}
+
+.content {
+  font-weight: 600;
+}

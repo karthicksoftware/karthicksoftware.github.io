@@ -1,0 +1,138 @@
+/*body {
+  font-family: Verdana, sans-serif;
+  margin: 0
+}*/
+
+/* Slideshow container */
+
+.slideshow-container {
+  position: relative;
+  background: white;
+}
+
+/* Slides */
+
+.mySlides {
+  position: relative;
+  display: none;
+  padding: 75px;
+  padding-top: 0rem;
+  text-align: center;
+  height: 30.5rem;
+}
+
+.mySlides-exp {
+  position: relative;
+  display: none;
+  padding: 75px;
+  padding-top: 0rem;
+  text-align: center;
+  height: 35rem;
+}
+
+/* Next & previous buttons */
+
+.slide-prev, .slide-next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -30px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background-color: lime;
+}
+
+/* Position the "next button" to the right */
+
+.slide-next {
+  position: absolute;
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+
+.slide-prev:hover, .slide-next:hover {
+  background-color: orange;
+  color: white;
+}
+
+/* The dot/bullet/indicator container */
+
+.dot-container {
+  text-align: center;
+  padding: 20px;
+  background: white;
+}
+
+/* The dots/bullets/indicators */
+
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+/* Add a background color to the active dot/circle */
+
+.s-active, .dot:hover {
+  background-color: orangered;
+}
+
+/* Add an italic font style to all quotes */
+
+q {
+  font-style: italic;
+}
+
+/* Add a blue color to the author */
+
+.author {
+  color: cornflowerblue;
+}
+
+.imgstyle {
+  height: 75px;
+  width: 75px;
+}
+
+.zoom {
+  /*padding: 20px;*/
+  transition: transform .2s;
+  /* Animation */
+  width: 85px;
+  height: 85px;
+  margin: 0 auto;
+}
+
+.icon-zoom {
+  transition: transform .2s;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+}
+
+.icon-zoom:hover {
+  transform: scale(1.5);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.zoom:hover {
+  transform: scale(1.5);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.carousel-inner img {
+  width: 100%;
+  height: 300px;
+}
