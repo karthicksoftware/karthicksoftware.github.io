@@ -68,7 +68,7 @@ $(document).ready(function () {
         indicators: true
     });
     var width = $(window).width();
-    if (width > 700) {
+    if (width > 1000) { //desktop
         $("#name").removeClass("hide").css({
             "text-align": "center",
             "font-size": "35px"
@@ -96,7 +96,36 @@ $(document).ready(function () {
             }, 600);
         });
 
-    } else {
+    }
+    if ((width < 800) && (width > 610)) { //tablet
+        $("#name").removeClass("hide").css({
+            "text-align": "center",
+            "font-size": "30px"
+        });
+        $("#desc").removeClass("hide").css({
+            "text-align": "center",
+            "font-size": "15px"
+        });
+        $("#job-title").css({
+            "height": "15rem"
+        });
+        $("#name").removeClass("hide").css({
+            "opacity": "0",
+            "right": "55px"
+        }).animate({
+            left: '20px',
+            opacity: '1'
+        }, 1000, function () {
+            $("#desc").removeClass("hide").css({
+                "opacity": "0",
+                "right": "60px"
+            }).animate({
+                left: '20px',
+                opacity: '1'
+            }, 600);
+        });
+
+    } else if (width < 600) { //mobile
         $("#name").removeClass("hide").css({
             "text-align": "center",
             "font-size": "25px"
@@ -119,48 +148,6 @@ $(document).ready(function () {
         });
 
     }
-
-    // $(window).scroll(function () {
-    //     var hT = $('#skills-index-banner').offset().top,
-    //         hH = $('#skills-index-banner').outerHeight(),
-    //         wH = $(window).height(),
-    //         wS = $(this).scrollTop();
-    //     if ((wS / 2) > (hT + hH - wH)) {
-    //         animateHeads("skills");
-    //     }
-
-    //     var hT = $('#experience-index-banner').offset().top,
-    //         hH = $('#experience-index-banner').outerHeight(),
-    //         wH = $(window).height(),
-    //         wS = $(this).scrollTop();
-    //     if ((wS / 2) > (hT + hH - wH)) {
-    //         animateHeads("experience");
-    //     }
-
-    //     var hT = $('#gallery-index-banner').offset().top,
-    //         hH = $('#gallery-index-banner').outerHeight(),
-    //         wH = $(window).height(),
-    //         wS = $(this).scrollTop();
-    //     if ((wS / 2) > (hT + hH - wH)) {
-    //         animateHeads("gallery");
-    //     }
-
-    //     var hT = $('#education-index-banner').offset().top,
-    //         hH = $('#education-index-banner').outerHeight(),
-    //         wH = $(window).height(),
-    //         wS = $(this).scrollTop();
-    //     if ((wS / 2) > (hT + hH - wH)) {
-    //         animateHeads("education");
-    //     }
-
-    //     var hT = $('#contact-index-banner').offset().top,
-    //         hH = $('#contact-index-banner').outerHeight(),
-    //         wH = $(window).height(),
-    //         wS = $(this).scrollTop();
-    //     if ((wS / 2) > (hT + hH - wH)) {
-    //         animateHeads("contact");
-    //     }
-    // });
 
     $("#d-skills").click(function () {
         scrollNavs(this);
@@ -218,8 +205,10 @@ $(document).ready(function () {
         }, 1000);
     }
 
-    $("#scroll-top-icon").click(function(){
-        $("html, body").animate({ scrollTop: 0 }, "slow");
+    $("#scroll-top-icon").click(function () {
+        $("html, body").animate({
+            scrollTop: 0
+        }, "slow");
     });
 
     var sliderContainer = $("#slider-container");
@@ -243,21 +232,27 @@ $(document).ready(function () {
         $(dotContainer).hide();
 
         var cols = $(".mySlides [class*='col m3 l3']");
-        for(var i = 0; i < cols.length; i++){
+        for (var i = 0; i < cols.length; i++) {
             $(cols[i]).removeClass("col");
             $(cols[i]).find(".icon-block").removeClass("icon-block");
             console.log("Col removed");
         }
         var paras = $(".mySlides p");
-        for(var i=0; i< paras.length; i++){
-            $(paras[i]).attr("style","font-size:0.8rem;");
+        for (var i = 0; i < paras.length; i++) {
+            $(paras[i]).attr("style", "font-size:0.8rem;");
         }
         $("#technolgy").removeClass("right");
 
-        $("#myslideblock").attr("style","padding-top: 2px;");
-        $(sliderContainer).attr("style","padding-top: 2px;");
+        $("#myslideblock").attr("style", "padding-top: 2px;");
+        $(sliderContainer).attr("style", "padding-top: 2px;");
         $("#scroll-top-icon").removeClass("btn-large").addClass("btn-small");
-        $(".fixed-action-btn").attr("style","bottom:85px; right: 24px;");
+        $(".fixed-action-btn").attr("style", "bottom:85px; right: 24px;");
+    }
+    else if ((width < 1100) && (width > 610)) {
+        var paras = $(".mySlides p");
+        for (var i = 0; i < paras.length; i++) {
+            $(paras[i]).attr("style", "font-size:1vw;");
+        }
     }
 
 
