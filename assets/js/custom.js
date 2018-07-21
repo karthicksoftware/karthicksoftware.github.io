@@ -97,7 +97,7 @@ $(document).ready(function () {
         });
 
     }
-    if ((width < 800) && (width > 610)) { //tablet
+    if ((width < 1100) && (width > 610)) { //tablet
         $("#name").removeClass("hide").css({
             "text-align": "center",
             "font-size": "30px"
@@ -124,6 +124,7 @@ $(document).ready(function () {
                 opacity: '1'
             }, 600);
         });
+        $(".mySlides h5.center").css({"font-size":"15px"});
 
     } else if (width < 600) { //mobile
         $("#name").removeClass("hide").css({
@@ -237,9 +238,9 @@ $(document).ready(function () {
             $(cols[i]).find(".icon-block").removeClass("icon-block");
             console.log("Col removed");
         }
-        var paras = $(".mySlides p");
+        var paras = $(".mySlides span");
         for (var i = 0; i < paras.length; i++) {
-            $(paras[i]).attr("style", "font-size:0.8rem;");
+            $(paras[i]).attr("style", "font-size:1.2rem;");
         }
         $("#technolgy").removeClass("right");
 
@@ -249,7 +250,7 @@ $(document).ready(function () {
         $(".fixed-action-btn").attr("style", "bottom:85px; right: 24px;");
     }
     else if ((width < 1100) && (width > 610)) {
-        var paras = $(".mySlides p");
+        var paras = $(".mySlides span");
         for (var i = 0; i < paras.length; i++) {
             $(paras[i]).attr("style", "font-size:1vw;");
         }
