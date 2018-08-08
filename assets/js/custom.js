@@ -75,7 +75,7 @@ $(document).ready(function () {
         });
         $("#desc").removeClass("hide").css({
             "text-align": "center",
-            "font-size": "20px"
+            "font-size": "18px"
         });
         $("#job-title").css({
             "height": "20rem"
