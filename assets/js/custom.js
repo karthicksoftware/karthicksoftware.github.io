@@ -1,260 +1,123 @@
-$(document).ready(function () {
-    $("#pg .content, #ug .content, #hsc .content, #ssc .content").hide();
-    $('.tooltipped').tooltip();
-    var pgicon = false;
-    var ugicon = false;
-    var hscicon = false;
-    var sscicon = false;
+(() => {
+  const navToggle = document.querySelector("[data-nav-toggle]");
+  const navLinks = document.querySelector("[data-nav-links]");
+  const year = document.querySelector("[data-year]");
+  const hero = document.querySelector(".hero");
+  const heroBg = document.querySelector(".hero-bg");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  if (year) {
+    year.textContent = new Date().getFullYear();
+  }
 
+  if (hero && heroBg && !reduceMotion.matches) {
+    let ticking = false;
 
-    $("#pg").click(function () {
-        var obj = "pg";
-        if (!pgicon) {
-            $(("#" + obj + " .small.material-icons")).text("expand_less");
-            $(("#" + obj + " .content")).show(500);
-            pgicon = true; // expanded
-        } else {
-            $(("#" + obj + " .small.material-icons")).text("expand_more");
-            $(("#" + obj + " .content")).hide(500);
-            pgicon = false; // collapsed
+    const updateHeroParallax = () => {
+      const rect = hero.getBoundingClientRect();
+      const progress = Math.min(Math.max(-rect.top / Math.max(rect.height, 1), 0), 1);
+      heroBg.style.setProperty("--hero-parallax", `${progress * 148}px`);
+      ticking = false;
+    };
+
+    const requestHeroParallax = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeroParallax);
+        ticking = true;
+      }
+    };
+
+    updateHeroParallax();
+    window.addEventListener("scroll", requestHeroParallax, { passive: true });
+    window.addEventListener("resize", requestHeroParallax);
+  }
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("is-open");
+      document.body.classList.toggle("nav-open", isOpen);
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.querySelector(".material-icons").textContent = isOpen ? "close" : "menu";
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("is-open");
+        document.body.classList.remove("nav-open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.querySelector(".material-icons").textContent = "menu";
+      });
+    });
+  }
+
+  const revealItems = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
         }
-    });
-    $("#ug").click(function () {
-        var obj = "ug";
-        if (!ugicon) {
-            $(("#" + obj + " .small.material-icons")).text("expand_less");
-            $(("#" + obj + " .content")).show(500);
-            ugicon = true; // expanded
-        } else {
-            $(("#" + obj + " .small.material-icons")).text("expand_more");
-            $(("#" + obj + " .content")).hide(500);
-            ugicon = false; // collapsed
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px 160px 0px" });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+  } else {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+  }
+
+  const counters = document.querySelectorAll("[data-count]");
+  const animateCounter = (node) => {
+    const target = Number(node.dataset.count);
+    if (!Number.isFinite(target)) return;
+
+    const duration = 900;
+    const start = performance.now();
+
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      node.textContent = Math.round(target * eased);
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        node.textContent = String(target);
+      }
+    };
+
+    requestAnimationFrame(tick);
+  };
+
+  if ("IntersectionObserver" in window) {
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
         }
-    });
-    $("#hsc").click(function () {
-        var obj = "hsc";
-        if (!hscicon) {
-            $(("#" + obj + " .small.material-icons")).text("expand_less");
-            $(("#" + obj + " .content")).show(500);
-            hscicon = true; // expanded
-        } else {
-            $(("#" + obj + " .small.material-icons")).text("expand_more");
-            $(("#" + obj + " .content")).hide(500);
-            hscicon = false; // collapsed
-        }
-    });
-    $("#ssc").click(function () {
-        var obj = "ssc";
-        if (!sscicon) {
-            $(("#" + obj + " .small.material-icons")).text("expand_less");
-            $(("#" + obj + " .content")).show(500);
-            sscicon = true; // expanded
-        } else {
-            $(("#" + obj + " .small.material-icons")).text("expand_more");
-            $(("#" + obj + " .content")).hide(500);
-            sscicon = false; // collapsed
-        }
-    });
+      });
+    }, { threshold: 0.5 });
 
-    $("#blogs").click(function () {
-        alert("This feature is currently under development, thus unavailable!!");
-    });
-    $('.carousel').carousel({
-        dist: -100,
-    });
-    $('.carousel.carousel-slider').carousel({
+    counters.forEach((counter) => counterObserver.observe(counter));
+  } else {
+    counters.forEach(animateCounter);
+  }
 
-        indicators: true
-    });
-    var width = $(window).width();
-    if (width > 1000) { //desktop
-        $("#name").removeClass("hide").css({
-            "text-align": "center",
-            "font-size": "35px"
+  const sections = document.querySelectorAll("main section[id]");
+  const navAnchors = document.querySelectorAll(".nav-links a[href^='#']");
+
+  if ("IntersectionObserver" in window && sections.length && navAnchors.length) {
+    const activeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        navAnchors.forEach((anchor) => {
+          anchor.classList.toggle("is-active", anchor.getAttribute("href") === `#${entry.target.id}`);
         });
-        $("#desc").removeClass("hide").css({
-            "text-align": "center",
-            "font-size": "18px"
-        });
-        $("#job-title").css({
-            "height": "20rem"
-        });
-        $("#name").removeClass("hide").css({
-            "opacity": "0",
-            "right": "60px"
-        }).animate({
-            left: '20px',
-            opacity: '1'
-        }, 1000, function () {
-            $("#desc").removeClass("hide").css({
-                "opacity": "0",
-                "right": "60px"
-            }).animate({
-                left: '20px',
-                opacity: '1'
-            }, 600);
-        });
+      });
+    }, { threshold: 0.35 });
 
-    }
-    if ((width < 1100) && (width > 610)) { //tablet
-        $("#name").removeClass("hide").css({
-            "text-align": "center",
-            "font-size": "30px"
-        });
-        $("#desc").removeClass("hide").css({
-            "text-align": "center",
-            "font-size": "15px"
-        });
-        $("#job-title").css({
-            "height": "15rem"
-        });
-        $("#name").removeClass("hide").css({
-            "opacity": "0",
-            "right": "55px"
-        }).animate({
-            left: '20px',
-            opacity: '1'
-        }, 1000, function () {
-            $("#desc").removeClass("hide").css({
-                "opacity": "0",
-                "right": "60px"
-            }).animate({
-                left: '20px',
-                opacity: '1'
-            }, 600);
-        });
-        $(".mySlides h5.center").css({"font-size":"15px"});
-
-    } else if (width < 600) { //mobile
-        $("#name").removeClass("hide").css({
-            "text-align": "center",
-            "font-size": "25px"
-        });
-        $("#desc").removeClass("hide").css({
-            "text-align": "center",
-            "font-size": "15px"
-        });
-        $("[class*='my-card']").css({
-            "height": "8rem",
-            "width": "8rem"
-        });
-        $(".my-card>img").css({
-            "height": "8rem",
-            "width": "8rem"
-        });
-        $("#gallery-images").css({
-            "padding-top": "25%",
-            "padding-bottom": "30%"
-        });
-
-    }
-
-    $("#d-skills").click(function () {
-        scrollNavs(this);
-        animateHeads("skills");
-    });
-
-    $("#d-contact").click(function () {
-        scrollNavs(this);
-        animateHeads("contact");
-    });
-
-    $("#d-experience").click(function () {
-        scrollNavs(this);
-        animateHeads("experience");
-    });
-
-    $("#d-gallery").click(function () {
-        scrollNavs(this);
-        animateHeads("gallery");
-    });
-
-    $("#d-education").click(function () {
-        scrollNavs(this);
-        animateHeads("education");
-    });
-
-    function scrollNavs(obj) {
-        // Make sure this.hash has a value before overriding default behavior        
-        if (obj.hash !== "") {
-            // Prevent default anchor click behavior
-            event.preventDefault();
-
-            // Store hash
-            var hash = obj.hash;
-
-            // Using jQuery's animate() method to add smooth page scroll
-            // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-            $('html, body').animate({
-                scrollTop: $(hash).offset().top
-            }, 800, function () {
-
-                // Add hash (#) to URL when done scrolling (default click behavior)
-                window.location.hash = hash;
-
-            });
-        } // End if
-    }
-
-    function animateHeads(headName) {
-        setTimeout(function () {
-            $("#" + headName + "-header").animate({
-                right: '90%',
-                "padding-left": '5rem'
-            }, 200);
-        }, 1000);
-    }
-
-    $("#scroll-top-icon").click(function () {
-        $("html, body").animate({
-            scrollTop: 0
-        }, "slow");
-    });
-
-    var sliderContainer = $("#slider-container");
-    var hiddenElements = $(".mySlides .hide-on-small-only");
-    var mySlides = "<div class='mySlides'></div>";
-    var dotContainer = $(".dot-container");
-    var prev = $('.slide-prev');
-    var next = $('.slide-next');
-    if (width < 600) {
-        var i;
-        for (i = 0; i < hiddenElements.length; i++) {
-            var ele = $(mySlides).append(hiddenElements[i]);
-            $(hiddenElements[i]).removeClass("hide-on-small-only")
-            $(sliderContainer).append(ele);
-
-            // var dot = "<span class='dot' onclick='currentSlide(" + (i + 2) + ")'></span>";
-            // dotContainer.append(dot);
-        }
-        $(sliderContainer).append(prev);
-        $(sliderContainer).append(next);
-        $(dotContainer).hide();
-
-        var cols = $(".mySlides [class*='col m3 l3']");
-        for (var i = 0; i < cols.length; i++) {
-            $(cols[i]).removeClass("col");
-            $(cols[i]).find(".icon-block").removeClass("icon-block");
-            console.log("Col removed");
-        }
-        var paras = $(".mySlides span");
-        for (var i = 0; i < paras.length; i++) {
-            $(paras[i]).attr("style", "font-size:1.2rem;");
-        }
-        $("#technolgy").removeClass("right");
-
-        $("#myslideblock").attr("style", "padding-top: 2px;");
-        $(sliderContainer).attr("style", "padding-top: 2px;");
-        $("#scroll-top-icon").removeClass("btn-large").addClass("btn-small");
-        $(".fixed-action-btn").attr("style", "bottom:85px; right: 24px;");
-    }
-    else if ((width < 1100) && (width > 610)) {
-        var paras = $(".mySlides span");
-        for (var i = 0; i < paras.length; i++) {
-            $(paras[i]).attr("style", "font-size:1vw;");
-        }
-    }
-
-
-});
+    sections.forEach((section) => activeObserver.observe(section));
+  }
+})();
